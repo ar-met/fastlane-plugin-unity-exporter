@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.author        = 'steft'
   spec.email         = '52441940+stef-t@users.noreply.github.com'
 
-  spec.summary       = 'Plugin for 'fastlane' that defines a pre-processing action for Unity3D for easy integration with 'fastlane'.'
+  spec.summary       = 'Plugin for \'fastlane\' that defines a pre-processing action for Unity3D for easy integration with \'fastlane\'.'
   # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-unity_exporter"
   spec.license       = "MIT"
 
