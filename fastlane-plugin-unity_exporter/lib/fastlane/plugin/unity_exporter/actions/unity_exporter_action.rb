@@ -6,6 +6,7 @@ module Fastlane
     class UnityExporterAction < Action
       def self.run(params)
         UI.message("The unity_exporter plugin is working!")
+        UI.message(Helper::UnityExporterHelper.unity_path)
       end
 
       def self.description
