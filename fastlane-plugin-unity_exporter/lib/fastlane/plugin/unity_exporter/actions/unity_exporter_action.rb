@@ -34,7 +34,7 @@ module Fastlane
 
         else
           UI.user_error!("Either provide a 'build_target' or 'arguments'.") if !params[:build_target] && !params[:arguments]
-          
+
         end
       end
 
@@ -68,12 +68,6 @@ module Fastlane
 
       def self.available_options
         [
-          # FastlaneCore::ConfigItem.new(key: :your_option,
-          #                         env_name: "UNITY_EXPORTER_YOUR_OPTION",
-          #                      description: "A description of your option",
-          #                         optional: false,
-          #                             type: String)
-
           #
           # How to start Unity via commandline?
           # Want a full list of all of Unity's commandline arguments?
@@ -98,7 +92,7 @@ module Fastlane
                                          # For now we only support iOS and Android as these platforms are supported by fastlane as well.
                                          # TODO add support for other platforms that are also supported by both fastlane and Unity
                                          # TODO verify if Unity's commandline param 'buildTarget' is case-sensitive
-                                         if value != "iOS" && value != "Android"
+                                         unless value == "iOS" || value == "Android"
                                            UI.user_error!("Please pass a valid build target. For options see 'fastlane action unity_exporter'")
                                          end
                                        end
@@ -124,7 +118,7 @@ module Fastlane
                                        type: String,
                                        conflicting_options: [:arguments],
                                        verify_block: proc do |value|
-                                         if value != "increment"
+                                         unless value == "increment"
                                            # Thank you: https://stackoverflow.com/a/24980633
                                            num = value.to_i
                                            if num.to_s != value || num < 0

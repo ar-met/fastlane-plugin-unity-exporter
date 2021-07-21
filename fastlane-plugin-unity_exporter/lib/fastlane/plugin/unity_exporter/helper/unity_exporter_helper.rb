@@ -15,6 +15,7 @@ module Fastlane
       def self.unity_path
         # TODO access Unity Hub via commandline "./Unity\ Hub -- --headless help" to get installed unity version
         # TODO install Unity version as defined in "ProjectVersion.txt"
+        # TODO Windows compatibility
 
         return "/Applications/Unity/Hub/Editor/2020.3.13f1/Unity.app/Contents/MacOS/Unity"
       end
