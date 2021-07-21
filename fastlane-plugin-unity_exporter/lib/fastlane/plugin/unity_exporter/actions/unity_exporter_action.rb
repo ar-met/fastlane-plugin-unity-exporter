@@ -7,9 +7,8 @@ module Fastlane
       def self.run(params)
         if params[:arguments]
           invoke_unity(arguments: " #{params[:arguments]}")
-        end
 
-        if params[:build_target]
+        elsif params[:build_target]
           # following are arguments as defined in the docs: https://docs.unity3d.com/Manual/CommandLineArguments.html
           begin
             headless_args = "-buildTarget #{params[:build_target]}"
@@ -22,8 +21,8 @@ module Fastlane
           # this script is part of the 'fastlane-plugin-unity-exporter-package'
           begin
             headless_args << " -executeMethod UnityExporter.BuildUtility.CreateBuild"
-            headless_args << " -version #{params[:version]}" if params[:version]
-            headless_args << " -versionCode #{params[:version_code]}" if params[:version_code]
+            headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
+            headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
             headless_args << " -exportPath fastlane-unity-exporter/#{params[:build_target]}/unity-export"
           end
 
@@ -32,6 +31,10 @@ module Fastlane
           # 'exportPath' is relative to 'projectPath' aka the Unity project's root directory
 
           invoke_unity(arguments: headless_args)
+
+        else
+          UI.user_error!("Either provide a 'build_target' or 'arguments'.") if !params[:build_target] && !params[:arguments]
+          
         end
       end
 
@@ -60,7 +63,7 @@ module Fastlane
 
       def self.details
         # Optional:
-        "Plugin for 'fastlane' that defines a pre-processing action for Unity3D for easy integration with 'fastlane'."
+        "Plugin for 'fastlane' that defines a pre-processing action to export iOS and Android projects via Unity3D. This allows Unity3D to more easily integrate with 'fastlane'."
       end
 
       def self.available_options
@@ -79,7 +82,7 @@ module Fastlane
 
           FastlaneCore::ConfigItem.new(key: :arguments,
                                        env_name: "FL_UNITY_ARGUMENTS",
-                                       description: "Use the 'arguments' parameter, if you want to specify all headless arguments yourself",
+                                       description: "Use the 'arguments' parameter, if you want to specify all headless arguments yourself. See Unity docs regarding 'CommandLineArguments' for a all available arguments",
                                        optional: true,
                                        type: String,
                                        conflicting_options: [:build_target]
@@ -87,7 +90,7 @@ module Fastlane
 
           FastlaneCore::ConfigItem.new(key: :build_target,
                                        env_name: "FL_UNITY_BUILD_TARGET",
-                                       description: "The build target",
+                                       description: "The build target. Options: 'iOS', 'Android'",
                                        optional: true,
                                        type: String,
                                        conflicting_options: [:arguments],
@@ -96,36 +99,36 @@ module Fastlane
                                          # TODO add support for other platforms that are also supported by both fastlane and Unity
                                          # TODO verify if Unity's commandline param 'buildTarget' is case-sensitive
                                          if value != "iOS" && value != "Android"
-                                           UI.user_error!("Please pass either 'iOS' or 'Android' as value. Specify neither to run both.")
+                                           UI.user_error!("Please pass a valid build target. For options see 'fastlane action unity_exporter'")
                                          end
                                        end
           ),
 
-          FastlaneCore::ConfigItem.new(key: :version,
-                                       env_name: "FL_UNITY_VERSION",
-                                       description: "The new version",
+          FastlaneCore::ConfigItem.new(key: :new_version,
+                                       env_name: "FL_UNITY_NEW_VERSION",
+                                       description: "The new version. Options: 'major', 'minor', 'patch' (for bumping) and '{major}.{minor}.{patch}' (new semantic version to apply)",
                                        optional: true,
                                        type: String,
                                        conflicting_options: [:arguments],
                                        verify_block: proc do |value|
-                                         unless value != "major" && value != "minor" && value != "patch" && !Gem::Version.new(value).correct?
-                                           UI.user_error!("Please pass a valid version like: 'major', 'minor', 'patch', '1.2.3' (semantic version)")
+                                         unless value == "major" || value == "minor" || value == "patch" || Gem::Version.new(value).correct?
+                                           UI.user_error!("Please pass a valid version. For options see 'fastlane action unity_exporter'")
                                          end
                                        end
           ),
 
-          FastlaneCore::ConfigItem.new(key: :version_code,
-                                       env_name: "FL_UNITY_VERSION_CODE",
-                                       description: "The new version code",
+          FastlaneCore::ConfigItem.new(key: :new_version_code,
+                                       env_name: "FL_UNITY_NEW_VERSION_CODE",
+                                       description: "The new version code. Options: 'increment' (for incrementing the current code), '{unsigned integer}' (new code to apply)",
                                        optional: true,
                                        type: String,
                                        conflicting_options: [:arguments],
                                        verify_block: proc do |value|
-                                         if value != "true"
+                                         if value != "increment"
                                            # Thank you: https://stackoverflow.com/a/24980633
                                            num = value.to_i
                                            if num.to_s != value || num < 0
-                                             UI.user_error!("Please pass a valid version code like: 'true', '1' (unsigned integer)")
+                                             UI.user_error!("Please pass a valid version code. For options see 'fastlane action unity_exporter'")
                                            end
                                          end
                                        end
