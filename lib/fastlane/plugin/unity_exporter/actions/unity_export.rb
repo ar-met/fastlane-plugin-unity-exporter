@@ -3,7 +3,7 @@ require_relative '../helper/unity_exporter_helper'
 
 module Fastlane
   module Actions
-    class UnityExporterAction < Action
+    class UnityExportAction < Action
       def self.run(params)
         if params[:arguments]
           if params[:use_default_paths]
@@ -19,8 +19,8 @@ module Fastlane
           begin
             headless_args = "-buildTarget #{params[:build_target]}"
             headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
-            headless_args << " -projectPath ../../" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
-            headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L_#{params[:build_target]}_build.log")}" # logging; not specifying a path will print the log to the console
+            headless_args << " -projectPath #{Helper::UnityExporterHelper.unity_project_path_relative_to_fastfile}" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
+            headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L")}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
           end
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
