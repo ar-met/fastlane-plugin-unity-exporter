@@ -12,7 +12,7 @@ fastlane add_plugin unity_exporter
 
 ## About unity_exporter
 
-Plugin for 'fastlane' that defines a pre-processing action for Unity3D for easy integration with 'fastlane'.
+Plugin for 'fastlane' that defines a pre-processing action to export iOS and Android projects via Unity3D. This allows Unity3D to more easily integrate with 'fastlane'.
 
 **Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
 
