@@ -6,7 +6,13 @@ module Fastlane
     class UnityExporterAction < Action
       def self.run(params)
         if params[:arguments]
-          invoke_unity(arguments: " #{params[:arguments]}")
+          if params[:use_default_paths]
+            invoke_unity(arguments: " #{params[:arguments]}")
+          else
+            # path to Unity is provided as part of 'arguments'
+            UI.important("Expecting path to Unity as part of 'arguments'.")
+            sh params[:arguments]
+          end
 
         elsif params[:build_target]
           # following are arguments as defined in the docs: https://docs.unity3d.com/Manual/CommandLineArguments.html
@@ -79,6 +85,15 @@ module Fastlane
                                        description: "Use the 'arguments' parameter, if you want to specify all headless arguments yourself. See Unity docs regarding 'CommandLineArguments' for a all available arguments",
                                        optional: true,
                                        type: String,
+                                       conflicting_options: [:build_target]
+          ),
+
+          FastlaneCore::ConfigItem.new(key: :use_default_paths,
+                                       env_name: "FL_UNITY_USE_DEFAULT_PATHS",
+                                       description: "'true': Plugin expects Unity default paths. 'false': Custom path is provided as part of the 'arguments' parameter",
+                                       optional: true,
+                                       default_value: true,
+                                       type: Boolean,
                                        conflicting_options: [:build_target]
           ),
 
