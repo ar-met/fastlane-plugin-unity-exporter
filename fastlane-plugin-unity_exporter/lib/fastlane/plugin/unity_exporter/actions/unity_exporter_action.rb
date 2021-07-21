@@ -14,8 +14,8 @@ module Fastlane
           begin
             headless_args = "-buildTarget #{params[:build_target]}"
             headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
-            headless_args << " -projectPath ../../" # project path relative if following hierarchy is given: "root/unity-project/fastlane-unity-exporter/{platform}-export/."
-            headless_args << " -logFile fastlane/unity-exporter-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L_#{params[:build_target]}_build.log")}" # logging; not specifying a path will print the log to the console
+            headless_args << " -projectPath ../../" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
+            headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L_#{params[:build_target]}_build.log")}" # logging; not specifying a path will print the log to the console
           end
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
@@ -24,8 +24,12 @@ module Fastlane
             headless_args << " -executeMethod UnityExporter.BuildUtility.CreateBuild"
             headless_args << " -version #{params[:version]}" if params[:version]
             headless_args << " -versionCode #{params[:version_code]}" if params[:version_code]
-            headless_args << " -exportPath ."
+            headless_args << " -exportPath fastlane-unity-exporter/#{params[:build_target]}/unity-export"
           end
+
+          # note the different relative paths used in 'projectPath' and 'exportPath'
+          # while 'projectPath' is relative to the 'fastfile',
+          # 'exportPath' is relative to 'projectPath' aka the Unity project's root directory
 
           invoke_unity(arguments: headless_args)
         end
@@ -67,7 +71,11 @@ module Fastlane
           #                         optional: false,
           #                             type: String)
 
-          # How to start Unity via commandline? See here: https://docs.unity3d.com/Manual/CommandLineArguments.html
+          #
+          # How to start Unity via commandline?
+          # Want a full list of all of Unity's commandline arguments?
+          # See here: https://docs.unity3d.com/Manual/CommandLineArguments.html
+          #
 
           FastlaneCore::ConfigItem.new(key: :arguments,
                                        env_name: "FL_UNITY_ARGUMENTS",
@@ -98,6 +106,7 @@ module Fastlane
                                        description: "The new version",
                                        optional: true,
                                        type: String,
+                                       conflicting_options: [:arguments],
                                        verify_block: proc do |value|
                                          unless value != "major" && value != "minor" && value != "patch" && !Gem::Version.new(value).correct?
                                            UI.user_error!("Please pass a valid version like: 'major', 'minor', 'patch', '1.2.3' (semantic version)")
@@ -110,6 +119,7 @@ module Fastlane
                                        description: "The new version code",
                                        optional: true,
                                        type: String,
+                                       conflicting_options: [:arguments],
                                        verify_block: proc do |value|
                                          if value != "true"
                                            # Thank you: https://stackoverflow.com/a/24980633
