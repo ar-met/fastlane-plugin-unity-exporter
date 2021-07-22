@@ -113,14 +113,18 @@ module Fastlane
         if FastlaneCore::Helper.is_mac?
           hub_path = "/Applications/Unity Hub.app/Contents/MacOS/Unity Hub"
         elsif FastlaneCore::Helper.is_windows?
-          hub_path = "C:\\Program Files\\Unity\\ Hub\\Unity\\ Hub.exe"
+          hub_path = "C:\\Program Files\\Unity Hub\\Unity Hub.exe"
         elsif FastlaneCore::Helper.linux?
           # TODO
           UI.error("Not implemented yet")
         end
 
         if escape_for_shell
-          return Shellwords.escape(hub_path)
+          if FastlaneCore::Helper.is_windows?
+            return "\"#{hub_path}\""
+          else
+            return Shellwords.escape(hub_path)
+          end
         else
           return hub_path
         end
