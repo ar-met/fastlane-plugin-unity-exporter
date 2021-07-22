@@ -25,7 +25,12 @@ module Fastlane
       end
 
       def self.unity_path
-        return Shellwords.escape(unity_find_best_version)
+        unity_binary_path = unity_find_best_version
+        if FastlaneCore::Helper.is_windows?
+          return "\"#{unity_binary_path}\""
+        else
+          return Shellwords.escape(unity_binary_path)
+        end
       end
 
       def self.unity_find_best_version
@@ -75,6 +80,8 @@ module Fastlane
         # Unity Hub help: "./Unity\ Hub -- --headless help"
         installed_editors_result = (`#{Helper::UnityExporterHelper.unity_hub_path(true)} -- --headless editors -i`).split("\n")
         installed_editors_result.each { |editor_description|
+          next if editor_description == "" # skipping empty strings
+
           # Mac: "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"
           # Windows: "2019.4.18f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe"
           # Linux: ?? TODO
