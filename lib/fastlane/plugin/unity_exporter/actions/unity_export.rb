@@ -54,7 +54,13 @@ module Fastlane
           return
         end
 
-        invocation = "#{Helper::UnityExporterHelper.unity_path}"
+        unity_path = Helper::UnityExporterHelper.unity_path
+        if unity_path == ""
+          return
+        end
+
+        UI.message("Open 'logFile', if you want to know whats going on with your build.")
+        invocation = "#{unity_path}"
         invocation << " #{params[:arguments]}"
         sh invocation # 'sh' will print what's passed to it
       end

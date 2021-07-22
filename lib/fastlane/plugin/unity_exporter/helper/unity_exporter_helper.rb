@@ -34,16 +34,31 @@ module Fastlane
         end
 
         unity_project_version = unity_project_projectversion
-        UI.message("Unity project uses version '#{unity_project_version}'")
+        UI.important("Unity project uses version '#{unity_project_version}'")
 
         if @@installed_editors.has_key?(unity_project_version)
-          UI.message("'#{unity_project_version}' is installed!")
+          UI.important("'#{unity_project_version}' is installed!")
           return @@installed_editors[unity_project_version][2]
         end
 
-        # TODO install editor via Hub if necessary?
-        # TODO provide other version as fallback
+        # exact version is not installed, now finding closest version by ignoring "patch"
+        fallback_editor = []
+        version_no_patch_regex = /\d+\.\d+/
+        unity_project_version_no_patch = unity_project_version.match(version_no_patch_regex)[0]
+        @@installed_editors.values.each do |installed_editor|
+          if installed_editor[0].match(version_no_patch_regex)[0] == unity_project_version_no_patch
+            fallback_editor = installed_editor
+          end
+        end
 
+        if fallback_editor == []
+          # TODO offer to install appropriate editor via Hub?
+          UI.user_error!("'#{unity_project_version}' not installed. No appropriate fallback found. Please install ‘#{unity_project_version}‘ or the latest '#{unity_project_version_no_patch}' manually via the Unity Hub.")
+          return ""
+        end
+
+        UI.important("'#{unity_project_version}' not installed. Using '#{fallback_editor[0]}' instead.")
+        return fallback_editor[2]
       end
 
       def self.unity_project_projectversion
@@ -55,7 +70,7 @@ module Fastlane
       end
 
       def self.unity_detect_installed_editors
-        UI.message("Looking for installed Unity Editors...")
+        UI.message("Looking for installed Unity Editors known to the Unity Hub...")
 
         # Unity Hub help: "./Unity\ Hub -- --headless help"
         installed_editors_result = (`#{Helper::UnityExporterHelper.unity_hub_path(true)} -- --headless editors -i`).split("\n")
@@ -64,7 +79,6 @@ module Fastlane
           # Windows: "2019.4.18f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe"
           # Linux: ?? TODO
           editor_match = editor_description.scan(/((\d+\.\d+\.\d+)[abf]\d+).*installed at (\/.*)/)
-
           @@installed_editors[editor_match[0][0]] = [
             editor_match[0][0], # the Unity version
             editor_match[0][1], # the semantic version part of the Unity version
@@ -72,6 +86,8 @@ module Fastlane
             Helper::UnityExporterHelper.unity_binary_relative_to_path(editor_match[0][2])
           ]
         }
+
+        UI.message("Found Unity Editors: #{@@installed_editors.keys}")
       end
 
       def self.unity_binary_relative_to_path(unity_path)
