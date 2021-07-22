@@ -50,6 +50,10 @@ module Fastlane
           return
         end
 
+        unless Helper::UnityExporterHelper.verify_unity_defaults
+          return
+        end
+
         invocation = "#{Helper::UnityExporterHelper.unity_path}"
         invocation << " #{params[:arguments]}"
         sh invocation # 'sh' will print what's passed to it
