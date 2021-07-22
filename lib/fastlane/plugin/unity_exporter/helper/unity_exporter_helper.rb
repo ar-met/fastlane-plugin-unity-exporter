@@ -73,8 +73,18 @@ module Fastlane
         UI.message("Looking for installed Unity Editors known to the Unity Hub...")
 
         # Unity Hub help: "./Unity\ Hub -- --headless help"
-        installed_editors_result = (`#{Helper::UnityExporterHelper.unity_hub_path(true)} -- --headless editors -i`).split("\n")
-        installed_editors_result.each { |editor_description|
+        installed_editors_cmd_result = `#{Helper::UnityExporterHelper.unity_hub_path(true)} -- --headless editors -i`
+        p installed_editors_cmd_result
+
+        split_delimiter = ""
+        if FastlaneCore::Helper.is_mac?
+          split_delimiter = "\n"
+        elsif FastlaneCore::Helper.is_windows?
+          split_delimiter = "\r\n"
+        end
+
+        installed_editors_split = installed_editors_cmd_result.split(split_delimiter)
+        installed_editors_split.each { |editor_description|
           # Mac: "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"
           # Windows: "2019.4.18f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe"
           # Linux: ?? TODO
