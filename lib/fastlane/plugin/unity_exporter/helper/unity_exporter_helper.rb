@@ -25,7 +25,7 @@ module Fastlane
       end
 
       def self.unity_path
-        return unity_find_best_version
+        return Shellwords.escape(unity_find_best_version)
       end
 
       def self.unity_find_best_version
@@ -60,9 +60,9 @@ module Fastlane
         # Unity Hub help: "./Unity\ Hub -- --headless help"
         installed_editors_result = (`#{Helper::UnityExporterHelper.unity_hub_path(true)} -- --headless editors -i`).split("\n")
         installed_editors_result.each { |editor_description|
-          # example result on mac "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"
-          # example result on windows ?? TODO
-          # example result on linux ?? TODO
+          # Mac: "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"
+          # Windows: "2019.4.18f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe"
+          # Linux: ?? TODO
           editor_match = editor_description.scan(/((\d+\.\d+\.\d+)[abf]\d+).*installed at (\/.*)/)
 
           @@installed_editors[editor_match[0][0]] = [
@@ -75,25 +75,29 @@ module Fastlane
       end
 
       def self.unity_binary_relative_to_path(unity_path)
+        # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html#install
+
         if FastlaneCore::Helper.is_mac?
+          # Mac example: "/Applications/Unity/Hub/Editor/<version>/Unity.app"
           return "#{unity_path}/Contents/MacOS/Unity"
         elsif FastlaneCore::Helper.is_windows?
-          # TODO
-          UI.error("Not implemented yet")
+          # Windows example: "C:\Program Files\Unity\Hub\Editor\<version>\Editor\Unity.exe"
+          # path can be taken as is
+          return unity_path
         elsif FastlaneCore::Helper.linux?
-          # TODO
+          # Linux example: ?? TODO
           UI.error("Not implemented yet")
         end
       end
 
       def self.unity_hub_path(escape_for_shell)
+        # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html
         hub_path = ""
 
         if FastlaneCore::Helper.is_mac?
           hub_path = "/Applications/Unity Hub.app/Contents/MacOS/Unity Hub"
         elsif FastlaneCore::Helper.is_windows?
-          # TODO
-          UI.error("Not implemented yet")
+          hub_path = "C:\\Program Files\\Unity\\ Hub\\Unity\\ Hub.exe"
         elsif FastlaneCore::Helper.linux?
           # TODO
           UI.error("Not implemented yet")
