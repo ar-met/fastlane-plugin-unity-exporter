@@ -1,5 +1,6 @@
 require 'fastlane/action'
 require_relative '../helper/unity_exporter_helper'
+require_relative '../helper/unity_editor_helper'
 
 module Fastlane
   module Actions

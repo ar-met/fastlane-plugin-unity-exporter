@@ -1,5 +1,6 @@
 require 'fastlane_core/ui/ui'
 require 'shellwords'
+require_relative './unity_hub_helper'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
