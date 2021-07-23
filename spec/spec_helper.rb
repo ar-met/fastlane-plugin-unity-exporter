@@ -18,7 +18,8 @@ def copy_fixtures
   FileUtils.mkdir_p("/tmp/fastlane/tests/")
   FileUtils.cp_r(
     "./spec/fixtures/",
-    "/tmp/fastlane/tests/")
+    "/tmp/fastlane/tests/"
+  )
 end
 
 def cleanup_fixtures

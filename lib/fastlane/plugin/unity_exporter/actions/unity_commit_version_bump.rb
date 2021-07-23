@@ -5,15 +5,15 @@ module Fastlane
   module Actions
     class UnityCommitVersionBumpAction < Action
       def self.run(params)
-        # TODO improve the commit command: currently it simply commits the ProjectSettings file
+        # TODO: improve the commit command: currently it simply commits the ProjectSettings file
         #      what if there are other changes in the file and you don't want these changes to be part of the commit
 
-        log_file = "unity-export-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L")}_git.log"
+        log_file = "unity-export-logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_git.log"
 
         # Thank you: https://linuxize.com/post/bash-redirect-stderr-stdout/#redirecting-stderr-to-stdout
-        sh "echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1"
-        sh "git add '#{Helper::UnityExporterHelper.unity_project_path_relative_to_fastfile}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1"
-        sh "git commit -m 'Version Bump' >> #{log_file} 2>&1"
+        sh("echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1")
+        sh("git add '#{Helper::UnityExporterHelper.unity_project_path_relative_to_fastfile}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
+        sh("git commit -m 'Version Bump' >> #{log_file} 2>&1")
       end
 
       def self.description
@@ -44,4 +44,3 @@ module Fastlane
     end
   end
 end
-

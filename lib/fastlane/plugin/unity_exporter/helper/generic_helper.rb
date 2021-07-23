@@ -6,7 +6,6 @@ module Fastlane
 
   module Helper
     class GenericHelper
-
       def self.shellify(path)
         if FastlaneCore::Helper.is_mac?
           return Shellwords.escape(path)
@@ -20,7 +19,6 @@ module Fastlane
 
         end
       end
-
     end
   end
 end

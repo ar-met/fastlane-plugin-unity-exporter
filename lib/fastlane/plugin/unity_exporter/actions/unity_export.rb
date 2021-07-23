@@ -5,7 +5,6 @@ require_relative '../helper/unity_editor_helper'
 module Fastlane
   module Actions
     class UnityExportAction < Action
-
       def self.run(params)
         if params[:arguments]
           if params[:use_default_paths]
@@ -13,28 +12,24 @@ module Fastlane
           else
             # path to Unity is provided as part of 'arguments'
             UI.important("Expecting path to Unity as part of 'arguments'.")
-            sh params[:arguments]
+            sh(params[:arguments])
           end
 
         elsif params[:build_target]
           # following are arguments as defined in the docs: https://docs.unity3d.com/Manual/CommandLineArguments.html
-          begin
-            headless_args = "-buildTarget #{params[:build_target]}"
-            headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
-            headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
-            headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L")}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
-          end
+          headless_args = "-buildTarget #{params[:build_target]}"
+          headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
+          headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
+          headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
           # this script is part of the 'fastlane-plugin-unity-exporter-package'
-          begin
-            headless_args << " -executeMethod UnityExporter.BuildUtility.CreateBuild"
-            headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
-            headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
-            headless_args << " -exportPath fastlane-unity-exporter/#{params[:build_target]}/unity-export"
-          end
+          headless_args << " -executeMethod UnityExporter.BuildUtility.CreateBuild"
+          headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
+          headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
+          headless_args << " -exportPath fastlane-unity-exporter/#{params[:build_target]}/unity-export"
 
-          # note the different relative paths used in 'projectPath' and 'exportPath'
+          # NOTE: the different relative paths used in 'projectPath' and 'exportPath'
           # while 'projectPath' is relative to the 'fastfile',
           # 'exportPath' is relative to 'projectPath' aka the Unity project's root directory
 
@@ -62,9 +57,9 @@ module Fastlane
         end
 
         UI.message("Open 'logFile', if you want to know whats going on with your build.")
-        invocation = "#{unity_path}"
+        invocation = unity_path.to_s
         invocation << " #{params[:arguments]}"
-        sh invocation # 'sh' will print what's passed to it
+        sh(invocation) # 'sh' will print what's passed to it
       end
 
       def self.description
@@ -97,17 +92,19 @@ module Fastlane
                                        description: "Use the 'arguments' parameter, if you want to specify all headless arguments yourself. See Unity docs regarding 'CommandLineArguments' for a all available arguments",
                                        optional: true,
                                        type: String,
-                                       conflicting_options: [:build_target]
-          ),
+                                       conflicting_options: [:build_target]),
 
           FastlaneCore::ConfigItem.new(key: :use_default_paths,
                                        env_name: "FL_UNITY_USE_DEFAULT_PATHS",
                                        description: "'true': Plugin expects Unity default paths. 'false': Custom path is provided as part of the 'arguments' parameter",
                                        optional: true,
                                        default_value: true,
-                                       type: Boolean,
-                                       conflicting_options: [:build_target]
-          ),
+                                       conflicting_options: [:build_target],
+                                       verify_block: proc do |value|
+                                         unless value == true || value == false
+                                           UI.user_error!("Must be set to 'true' or 'false'.")
+                                         end
+                                       end),
 
           FastlaneCore::ConfigItem.new(key: :build_target,
                                        env_name: "FL_UNITY_BUILD_TARGET",
@@ -122,8 +119,7 @@ module Fastlane
                                          unless value == "iOS" || value == "Android"
                                            UI.user_error!("Please pass a valid build target. For options see 'fastlane action unity_exporter'")
                                          end
-                                       end
-          ),
+                                       end),
 
           FastlaneCore::ConfigItem.new(key: :new_version,
                                        env_name: "FL_UNITY_NEW_VERSION",
@@ -135,8 +131,7 @@ module Fastlane
                                          unless value == "major" || value == "minor" || value == "patch" || Gem::Version.new(value).correct?
                                            UI.user_error!("Please pass a valid version. For options see 'fastlane action unity_exporter'")
                                          end
-                                       end
-          ),
+                                       end),
 
           FastlaneCore::ConfigItem.new(key: :new_version_code,
                                        env_name: "FL_UNITY_NEW_VERSION_CODE",
@@ -152,8 +147,7 @@ module Fastlane
                                              UI.user_error!("Please pass a valid version code. For options see 'fastlane action unity_exporter'")
                                            end
                                          end
-                                       end
-          )
+                                       end)
         ]
       end
 
@@ -163,7 +157,6 @@ module Fastlane
         [:ios, :android].include?(platform)
         true
       end
-
     end
   end
 end

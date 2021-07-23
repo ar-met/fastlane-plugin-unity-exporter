@@ -5,7 +5,6 @@ module Fastlane
 
   module Helper
     class UnityHubHelper
-
       def self.unity_hub_path(escape_for_shell)
         # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html
         hub_path = ""
@@ -26,19 +25,20 @@ module Fastlane
         end
       end
 
-      def self.get_installed_editors
+      def self.unity_hub_installed_editors
         UI.message("Looking for installed Unity Editors known to the Unity Hub...")
 
         # Unity Hub help: "./Unity\ Hub -- --headless help"
         installed_editors_result = (`#{unity_hub_path(true)} -- --headless editors -i`).split("\n")
         installed_editors_list = parse_installed_editors(installed_editors_result)
-        installed_editors = Hash[installed_editors_list.collect { |installed_editor|
+        installed_editors = installed_editors_list.collect do |installed_editor|
           [installed_editor[0],
            [
              installed_editor[0],
              installed_editor[1],
              unity_binary_relative_to_path(installed_editor[2])
-           ]] }]
+           ]]
+        end.to_h
 
         UI.message("Found Unity Editors: #{installed_editors.keys}")
         return installed_editors
@@ -46,11 +46,9 @@ module Fastlane
 
       #-----------------------------------------------------------------------------------------------------------------
 
-      private
-
       def self.parse_installed_editors(installed_editors_string)
         installed_editors_list = []
-        installed_editors_string.each { |editor_description|
+        installed_editors_string.each do |editor_description|
           next if editor_description == "" # skipping empty strings
 
           # Mac: "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"
@@ -64,7 +62,7 @@ module Fastlane
               editor_match[0][2] # the path to the Unity Editor
             ]
           )
-        }
+        end
         return installed_editors_list
       end
 
@@ -83,7 +81,6 @@ module Fastlane
           UI.error("Not implemented yet")
         end
       end
-
     end
   end
 end

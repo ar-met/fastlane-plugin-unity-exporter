@@ -7,7 +7,6 @@ module Fastlane
 
   module Helper
     class UnityExporterHelper
-
       def self.verify_unity_defaults
         # verifies that default installation paths were used for the Unity Hub
 
@@ -20,10 +19,9 @@ module Fastlane
       end
 
       def self.verify_unity_exporter_package
-        # TODO verify that the related unity package: the unity package contains all utility methods used by this plugin
+        # TODO: verify that the related unity package: the unity package contains all utility methods used by this plugin
         # --> simple "contains" check in manifest file?
       end
-
     end
   end
 end
