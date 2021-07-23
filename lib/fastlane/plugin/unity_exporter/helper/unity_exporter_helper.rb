@@ -6,13 +6,12 @@ module Fastlane
 
   module Helper
     class UnityExporterHelper
-      @@installed_editors = {}
 
       def self.verify_unity_defaults
         # verifies that default installation paths were used for the Unity Hub
 
-        unless File.file?(unity_hub_path(false)) == true
-          UI.error("Unity Hub does not exist at path '#{unity_hub_path(false)}'")
+        unless File.file?(Helper::UnityHubHelper.unity_hub_path(false)) == true
+          UI.error("Unity Hub does not exist at path '#{Helper::UnityHubHelper.unity_hub_path(false)}'")
           return false
         end
 
@@ -34,23 +33,21 @@ module Fastlane
       end
 
       def self.unity_find_best_version
-        if @@installed_editors.empty?
-          unity_detect_installed_editors
-        end
+        installed_editors = Helper::UnityHubHelper.get_installed_editors
 
         unity_project_version = unity_project_projectversion
         UI.important("Unity project uses version '#{unity_project_version}'")
 
-        if @@installed_editors.has_key?(unity_project_version)
+        if installed_editors.has_key?(unity_project_version)
           UI.important("'#{unity_project_version}' is installed!")
-          return @@installed_editors[unity_project_version][2]
+          return installed_editors[unity_project_version][2]
         end
 
         # exact version is not installed, now finding closest version by ignoring "patch"
         fallback_editor = []
         version_no_patch_regex = /\d+\.\d+/
         unity_project_version_no_patch = unity_project_version.match(version_no_patch_regex)[0]
-        @@installed_editors.values.each do |installed_editor|
+        installed_editors.values.each do |installed_editor|
           if installed_editor[0].match(version_no_patch_regex)[0] == unity_project_version_no_patch
             fallback_editor = installed_editor
           end
@@ -74,29 +71,6 @@ module Fastlane
         return project_version
       end
 
-      def self.unity_detect_installed_editors
-        UI.message("Looking for installed Unity Editors known to the Unity Hub...")
-
-        # Unity Hub help: "./Unity\ Hub -- --headless help"
-        installed_editors_result = (`#{Helper::UnityExporterHelper.unity_hub_path(true)} -- --headless editors -i`).split("\n")
-        installed_editors_result.each { |editor_description|
-          next if editor_description == "" # skipping empty strings
-
-          # Mac: "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"
-          # Windows: "2019.4.18f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe"
-          # Linux: ?? TODO
-          editor_match = editor_description.scan(/((\d+\.\d+\.\d+)[abf]\d+).*installed at (.*)/)
-          @@installed_editors[editor_match[0][0]] = [
-            editor_match[0][0], # the Unity version
-            editor_match[0][1], # the semantic version part of the Unity version
-            # the path to a Unity binary
-            Helper::UnityExporterHelper.unity_binary_relative_to_path(editor_match[0][2])
-          ]
-        }
-
-        UI.message("Found Unity Editors: #{@@installed_editors.keys}")
-      end
-
       def self.unity_binary_relative_to_path(unity_path)
         # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html#install
 
@@ -113,34 +87,11 @@ module Fastlane
         end
       end
 
-      def self.unity_hub_path(escape_for_shell)
-        # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html
-        hub_path = ""
-
-        if FastlaneCore::Helper.is_mac?
-          hub_path = "/Applications/Unity Hub.app/Contents/MacOS/Unity Hub"
-        elsif FastlaneCore::Helper.is_windows?
-          hub_path = "C:\\Program Files\\Unity Hub\\Unity Hub.exe"
-        elsif FastlaneCore::Helper.linux?
-          # TODO
-          UI.error("Not implemented yet")
-        end
-
-        if escape_for_shell
-          if FastlaneCore::Helper.is_windows?
-            return "\"#{hub_path}\""
-          else
-            return Shellwords.escape(hub_path)
-          end
-        else
-          return hub_path
-        end
-      end
-
       def self.unity_project_path_relative_to_fastfile
         #p File.expand_path("../../")
         return "../../"
       end
+
     end
   end
 end

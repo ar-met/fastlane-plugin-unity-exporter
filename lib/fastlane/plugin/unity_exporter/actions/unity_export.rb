@@ -4,6 +4,7 @@ require_relative '../helper/unity_exporter_helper'
 module Fastlane
   module Actions
     class UnityExportAction < Action
+
       def self.run(params)
         if params[:arguments]
           if params[:use_default_paths]
@@ -161,6 +162,7 @@ module Fastlane
         [:ios, :android].include?(platform)
         true
       end
+
     end
   end
 end
