@@ -1,5 +1,4 @@
 require 'fastlane_core/ui/ui'
-require 'shellwords'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
@@ -21,11 +20,7 @@ module Fastlane
         end
 
         if escape_for_shell
-          if FastlaneCore::Helper.is_windows?
-            return "\"#{hub_path}\""
-          else
-            return Shellwords.escape(hub_path)
-          end
+          return Helper::GenericHelper.shellify(hub_path)
         else
           return hub_path
         end
@@ -42,7 +37,7 @@ module Fastlane
            [
              installed_editor[0],
              installed_editor[1],
-             Helper::UnityExporterHelper.unity_binary_relative_to_path(installed_editor[2])
+             unity_binary_relative_to_path(installed_editor[2])
            ]] }]
 
         UI.message("Found Unity Editors: #{installed_editors.keys}")
@@ -66,11 +61,27 @@ module Fastlane
             [
               editor_match[0][0], # the Unity version
               editor_match[0][1], # the semantic version part of the Unity version
-              editor_match[0][2]  # the path to the Unity Editor
+              editor_match[0][2] # the path to the Unity Editor
             ]
           )
         }
         return installed_editors_list
+      end
+
+      def self.unity_binary_relative_to_path(unity_path)
+        # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html#install
+
+        if FastlaneCore::Helper.is_mac?
+          # Mac example: "/Applications/Unity/Hub/Editor/<version>/Unity.app"
+          return "#{unity_path}/Contents/MacOS/Unity"
+        elsif FastlaneCore::Helper.is_windows?
+          # Windows example: "C:\Program Files\Unity\Hub\Editor\<version>\Editor\Unity.exe"
+          # path can be taken as is
+          return unity_path
+        elsif FastlaneCore::Helper.linux?
+          # Linux example: ?? TODO
+          UI.error("Not implemented yet")
+        end
       end
 
     end

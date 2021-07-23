@@ -20,7 +20,7 @@ module Fastlane
           begin
             headless_args = "-buildTarget #{params[:build_target]}"
             headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
-            headless_args << " -projectPath #{Helper::UnityExporterHelper.unity_project_path_relative_to_fastfile}" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
+            headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
             headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime("%Y-%m-%d_%H-%M-%S-%L")}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
           end
 
@@ -55,7 +55,7 @@ module Fastlane
           return
         end
 
-        unity_path = Helper::UnityExporterHelper.unity_path
+        unity_path = Helper::UnityEditorHelper.unity_editor_path
         if unity_path == ""
           return
         end
