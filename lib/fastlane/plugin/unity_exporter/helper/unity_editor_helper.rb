@@ -9,6 +9,7 @@ module Fastlane
   module Helper
     class UnityEditorHelper
       def self.unity_project_path_relative_to_fastfile
+        # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-build-exporter/{platform}-export/."
         # p File.expand_path("../../")
         return "../../"
       end

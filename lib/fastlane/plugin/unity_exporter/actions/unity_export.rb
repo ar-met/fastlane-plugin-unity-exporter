@@ -21,7 +21,7 @@ module Fastlane
           headless_args = "-buildTarget #{params[:build_target]}"
           headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
           headless_args << " -accept-apiupdate -releaseCodeOptimization"
-          headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}" # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-unity-exporter/{platform}-export/."
+          headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}"
           headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
@@ -29,7 +29,7 @@ module Fastlane
           headless_args << " -executeMethod UnityExporter.BuildUtility.CreateBuild"
           headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
           headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
-          headless_args << " -exportPath fastlane-unity-exporter/#{params[:build_target]}/unity-export"
+          headless_args << " -exportPath fastlane-build-exporter/#{params[:build_target]}/unity-export"
 
           # NOTE: the different relative paths used in 'projectPath' and 'exportPath'
           # while 'projectPath' is relative to the 'fastfile',
