@@ -4,7 +4,7 @@ describe Fastlane::Helper::UnityEditorHelper do
   describe '#run' do
 
     before do
-      fake_unity_project
+      copy_fixtures
     end
 
     after do

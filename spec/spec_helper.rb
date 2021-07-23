@@ -14,10 +14,10 @@ require 'fastlane/plugin/unity_exporter' # import the actual plugin
 
 Fastlane.load_actions # load other actions (in case your plugin calls other actions or shared values)
 
-def fake_unity_project
+def copy_fixtures
   FileUtils.mkdir_p("/tmp/fastlane/tests/")
   FileUtils.cp_r(
-    "./spec/fixtures/unity_project/",
+    "./spec/fixtures/",
     "/tmp/fastlane/tests/")
 end
 

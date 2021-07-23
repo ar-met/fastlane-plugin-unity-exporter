@@ -46,7 +46,7 @@ module Fastlane
 
       def self.get_unity_project_version
         relative_path = FastlaneCore::Helper.is_test? ?
-                          "/tmp/fastlane/tests/unity_project" :
+                          "/tmp/fastlane/tests/fixtures/unity_project" :
                           unity_project_path_relative_to_fastfile
 
         project_version_txt_path = relative_path + "/ProjectSettings/ProjectVersion.txt"
