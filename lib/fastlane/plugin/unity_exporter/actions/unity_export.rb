@@ -1,7 +1,7 @@
 require 'fastlane/action'
 require 'fastlane_core/configuration/config_item'
-require_relative '../helper/unity_exporter_helper'
 require_relative '../helper/unity_editor_helper'
+require_relative '../helper/unity_hub_helper'
 
 module Fastlane
   module Actions
@@ -48,7 +48,11 @@ module Fastlane
           return
         end
 
-        unless Helper::UnityExporterHelper.verify_unity_defaults
+        unless Helper::UnityHubHelper.verify_default_path
+          return
+        end
+
+        unless Helper::UnityEditorHelper.verify_exporter_package
           return
         end
 
@@ -109,7 +113,7 @@ module Fastlane
 
           FastlaneCore::ConfigItem.new(key: :build_target,
                                        env_name: "FL_UNITY_BUILD_TARGET",
-                                       description: "The build target. Options: 'iOS', 'Android'",
+                                       description: "The build target. Options: 'iOS' and/or 'Android' depending on your platform",
                                        optional: true,
                                        type: String,
                                        conflicting_options: [:arguments],
@@ -117,8 +121,14 @@ module Fastlane
                                          # For now we only support iOS and Android as these platforms are supported by fastlane as well.
                                          # TODO add support for other platforms that are also supported by both fastlane and Unity
                                          # TODO verify if Unity's commandline param 'buildTarget' is case-sensitive
-                                         unless value == "iOS" || value == "Android"
-                                           UI.user_error!("Please pass a valid build target. For options see 'fastlane action unity_exporter'")
+                                         if FastlaneCore::Helper.is_mac?
+                                           unless value == "iOS" || value == "Android"
+                                             UI.user_error!("Please pass a valid build target. Mac options: 'iOS', 'Android'")
+                                           end
+                                         elsif FastlaneCore::Helper.is_windows?
+                                           unless value == "Android"
+                                             UI.user_error!("Please pass a valid build target. Windows options: 'Android'")
+                                           end
                                          end
                                        end),
 

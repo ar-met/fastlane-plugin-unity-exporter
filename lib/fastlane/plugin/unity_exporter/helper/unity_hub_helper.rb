@@ -26,6 +26,16 @@ module Fastlane
         end
       end
 
+      def self.verify_default_path
+        # verifies that the Unity Hub exists at the default path
+        exists = File.file?(Helper::UnityHubHelper.unity_hub_path(false)) == true
+        unless exists
+          UI.error("Unity Hub does not exist at path '#{Helper::UnityHubHelper.unity_hub_path(false)}'")
+        end
+
+        return exists
+      end
+
       def self.unity_hub_installed_editors
         UI.message("Looking for installed Unity Editors known to the Unity Hub...")
 

@@ -40,6 +40,29 @@ module Fastlane
         return installed_editors[fallback_editor_version][2]
       end
 
+      def self.verify_exporter_package
+        # verifies that the UnityExporter package has been added to the Unity project
+        exporter_package_namespace = "io.armet.unity.exporter"
+        included = load_unity_project_package_manifest.include?(exporter_package_namespace)
+        unless included
+          UI.user_error!("Package 'io.armet.unity.exporter' must be added to the Unity project.")
+        end
+
+        return included
+      end
+
+      def self.load_unity_project_package_manifest
+        relative_path = if FastlaneCore::Helper.is_test?
+                          "/tmp/fastlane/tests/fixtures/unity_project"
+                        else
+                          unity_project_path_relative_to_fastfile
+                        end
+
+        package_manifest_path = "#{relative_path}/Packages/manifest.json"
+        package_manifest_json = File.read(package_manifest_path)
+        return package_manifest_json
+      end
+
       def self.load_unity_project_version
         relative_path = if FastlaneCore::Helper.is_test?
                           "/tmp/fastlane/tests/fixtures/unity_project"

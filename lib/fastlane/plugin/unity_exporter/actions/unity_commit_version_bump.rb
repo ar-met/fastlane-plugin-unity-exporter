@@ -1,5 +1,5 @@
 require 'fastlane/action'
-require_relative '../helper/unity_exporter_helper'
+require_relative '../helper/unity_editor_helper'
 
 module Fastlane
   module Actions
@@ -12,7 +12,7 @@ module Fastlane
 
         # Thank you: https://linuxize.com/post/bash-redirect-stderr-stdout/#redirecting-stderr-to-stdout
         sh("echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1")
-        sh("git add '#{Helper::UnityExporterHelper.unity_project_path_relative_to_fastfile}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
+        sh("git add '#{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
         sh("git commit -m 'Version Bump' >> #{log_file} 2>&1")
       end
 
