@@ -1,4 +1,5 @@
 require 'fastlane_core/ui/ui'
+require_relative './generic_helper'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
