@@ -1,0 +1,11 @@
+2018.3.1f1 , installed at C:\Program Files\Unity\Hub\Editor\2018.3.1f1\Editor\Unity.exe
+2019.3.15f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.3.15f1\Editor\Unity.exe
+2019.4.15f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.15f1\Editor\Unity.exe
+2019.4.12f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.12f1\Editor\Unity.exe
+2019.4.0f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.0f1\Editor\Unity.exe
+2019.4.18f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe
+2019.4.8f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.8f1\Editor\Unity.exe
+2018.4.7f1 , installed at C:\Program Files\Unity\Hub\Editor\2018.4.7f1\Editor\Unity.exe
+2019.2.21f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.2.21f1\Editor\Unity.exe
+2019.4.5f1 , installed at C:\Program Files\Unity\Hub\Editor\2019.4.5f1\Editor\Unity.exe
+2020.3.13f1 , installed at C:\Program Files\Unity\Hub\Editor\2020.3.13f1\Editor\Unity.exe

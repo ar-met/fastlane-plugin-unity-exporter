@@ -18,8 +18,6 @@ module Fastlane
         return Helper::GenericHelper.shellify(unity_binary_path)
       end
 
-      #-----------------------------------------------------------------------------------------------------------------
-
       def self.find_best_unity_editor_version
         installed_editors = Helper::UnityHubHelper.unity_hub_installed_editors
 
@@ -50,7 +48,7 @@ module Fastlane
                         end
 
         project_version_txt_path = "#{relative_path}/ProjectSettings/ProjectVersion.txt"
-        project_version_txt = File.open(project_version_txt_path).read
+        project_version_txt = File.read(project_version_txt_path)
         project_version_match = project_version_txt.scan(/.*: (\d+\.\d+\.\d+[abf]\d+).*/)
         project_version = project_version_match[0][0]
         return project_version

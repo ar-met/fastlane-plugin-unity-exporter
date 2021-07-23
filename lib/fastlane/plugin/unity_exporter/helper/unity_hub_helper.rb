@@ -30,7 +30,7 @@ module Fastlane
         UI.message("Looking for installed Unity Editors known to the Unity Hub...")
 
         # Unity Hub help: "./Unity\ Hub -- --headless help"
-        installed_editors_result = (`#{unity_hub_path(true)} -- --headless editors -i`).split("\n")
+        installed_editors_result = (`#{unity_hub_path(true)} -- --headless editors -i`)
         installed_editors_list = parse_installed_editors(installed_editors_result)
         installed_editors = installed_editors_list.collect do |installed_editor|
           [installed_editor[0],
@@ -45,11 +45,9 @@ module Fastlane
         return installed_editors
       end
 
-      #-----------------------------------------------------------------------------------------------------------------
-
       def self.parse_installed_editors(installed_editors_string)
         installed_editors_list = []
-        installed_editors_string.each do |editor_description|
+        installed_editors_string.split("\n").each do |editor_description|
           next if editor_description == "" # skipping empty strings
 
           # Mac: "2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app"

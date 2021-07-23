@@ -1,0 +1,4 @@
+2021.1.14f1 , installed at /Applications/Unity/Hub/Editor/2021.1.14f1/Unity.app
+2019.4.18f1 , installed at /Applications/Unity/Hub/Editor/2019.4.18f1/Unity.app
+2020.3.13f1 , installed at /Applications/Unity/Hub/Editor/2020.3.13f1/Unity.app
+2019.4.28f1 , installed at /Applications/Unity/Hub/Editor/2019.4.28f1/Unity.app
