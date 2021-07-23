@@ -30,7 +30,7 @@ module Fastlane
         UI.message("Looking for installed Unity Editors known to the Unity Hub...")
 
         # Unity Hub help: "./Unity\ Hub -- --headless help"
-        installed_editors_result = (`#{unity_hub_path(true)} -- --headless editors -i`)
+        installed_editors_result = `#{unity_hub_path(true)} -- --headless editors -i`
         installed_editors_list = parse_installed_editors(installed_editors_result)
         installed_editors = installed_editors_list.collect do |installed_editor|
           [installed_editor[0],
