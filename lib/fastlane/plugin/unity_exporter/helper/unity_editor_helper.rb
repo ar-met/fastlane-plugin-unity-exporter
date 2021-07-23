@@ -14,14 +14,18 @@ module Fastlane
       end
 
       def self.unity_editor_path
-        unity_binary_path = unity_find_best_version
+        unity_binary_path = find_best_unity_editor_version
         return Helper::GenericHelper.shellify(unity_binary_path)
       end
 
-      def self.unity_find_best_version
+      #-----------------------------------------------------------------------------------------------------------------
+
+      private
+
+      def self.find_best_unity_editor_version
         installed_editors = Helper::UnityHubHelper.get_installed_editors
 
-        unity_project_version = unity_project_version
+        unity_project_version = get_unity_project_version
         UI.important("Unity project uses version '#{unity_project_version}'")
 
         if installed_editors.has_key?(unity_project_version)
@@ -29,7 +33,7 @@ module Fastlane
           return installed_editors[unity_project_version][2]
         end
 
-        fallback_editor_version = closest_unity_version(unity_project_version, installed_editors.keys)
+        fallback_editor_version = get_closest_unity_version(unity_project_version, installed_editors.keys)
         if fallback_editor_version == ""
           # TODO offer to install appropriate editor via Hub?
           UI.user_error!("'#{unity_project_version}' not installed. No appropriate fallback found. Please install ‘#{unity_project_version}‘ or the latest '#{unity_project_version_no_patch}' manually via the Unity Hub.")
@@ -40,19 +44,19 @@ module Fastlane
         return installed_editors[fallback_editor_version][2]
       end
 
-      #-----------------------------------------------------------------------------------------------------------------
+      def self.get_unity_project_version
+        relative_path = FastlaneCore::Helper.is_test? ?
+                          "/tmp/fastlane/tests/unity_project" :
+                          unity_project_path_relative_to_fastfile
 
-      private
-
-      def self.unity_project_version
-        project_version_txt_path = unity_project_path_relative_to_fastfile + "/ProjectSettings/ProjectVersion.txt"
+        project_version_txt_path = relative_path + "/ProjectSettings/ProjectVersion.txt"
         project_version_txt = File.open(project_version_txt_path).read
         project_version_match = project_version_txt.scan(/.*: (\d+\.\d+\.\d+[abf]\d+).*/)
         project_version = project_version_match[0][0]
         return project_version
       end
 
-      def self.closest_unity_version(unity_version, other_versions)
+      def self.get_closest_unity_version(unity_version, other_versions)
         # finds closest version by ignoring "patch"
         closest_version = ""
         version_no_patch_regex = /\d+\.\d+/

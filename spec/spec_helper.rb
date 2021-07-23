@@ -13,3 +13,14 @@ require 'fastlane' # to import the Action super class
 require 'fastlane/plugin/unity_exporter' # import the actual plugin
 
 Fastlane.load_actions # load other actions (in case your plugin calls other actions or shared values)
+
+def fake_unity_project
+  FileUtils.mkdir_p("/tmp/fastlane/tests/")
+  FileUtils.cp_r(
+    "./spec/fixtures/unity_project/",
+    "/tmp/fastlane/tests/")
+end
+
+def cleanup_fixtures
+  FileUtils.rm_r("/tmp/fastlane/tests/")
+end
