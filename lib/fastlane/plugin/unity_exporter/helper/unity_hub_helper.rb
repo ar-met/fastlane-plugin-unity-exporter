@@ -1,6 +1,5 @@
 require 'fastlane_core/ui/ui'
 require_relative './generic_helper'
-require 'os'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
@@ -11,11 +10,11 @@ module Fastlane
         # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html
         hub_path = ""
 
-        if os.mac?
+        if FastlaneCore::Helper.is_mac?
           hub_path = "/Applications/Unity Hub.app/Contents/MacOS/Unity Hub"
-        elsif os.windows?
+        elsif FastlaneCore::Helper.is_windows?
           hub_path = "C:\\Program Files\\Unity Hub\\Unity Hub.exe"
-        elsif os.linux?
+        elsif FastlaneCore::Helper.linux?
           # TODO
           UI.error("Not implemented yet")
         end
@@ -79,14 +78,14 @@ module Fastlane
       def self.unity_binary_relative_to_path(unity_path)
         # https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html#install
 
-        if os.mac?
+        if FastlaneCore::Helper.is_mac?
           # Mac example: "/Applications/Unity/Hub/Editor/<version>/Unity.app"
           return "#{unity_path}/Contents/MacOS/Unity"
-        elsif os.windows?
+        elsif FastlaneCore::Helper.is_windows?
           # Windows example: "C:\Program Files\Unity\Hub\Editor\<version>\Editor\Unity.exe"
           # path can be taken as is
           return unity_path
-        elsif os.linux?
+        elsif FastlaneCore::Helper.linux?
           # Linux example: ?? TODO
           UI.error("Not implemented yet")
         end

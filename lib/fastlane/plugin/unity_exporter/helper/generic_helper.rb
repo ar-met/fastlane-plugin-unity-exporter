@@ -1,6 +1,5 @@
 require 'fastlane_core/ui/ui'
 require 'shellwords'
-require 'os'
 
 module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
@@ -8,13 +7,13 @@ module Fastlane
   module Helper
     class GenericHelper
       def self.shellify(path)
-        if os.mac?
+        if FastlaneCore::Helper.is_mac?
           return Shellwords.escape(path)
 
-        elsif os.windows?
+        elsif FastlaneCore::Helper.is_windows?
           return "\"#{path}\""
 
-        elsif os.linux?
+        elsif FastlaneCore::Helper.linux?
           # TODO
           UI.error("Not implemented yet")
 
