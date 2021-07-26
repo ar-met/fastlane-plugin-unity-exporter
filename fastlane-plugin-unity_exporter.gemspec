@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.author        = 'ar:met'
   spec.email         = 'office@armet.at'
 
-  spec.summary       = 'Plugin for \'fastlane\' that defines a pre-processing action to export iOS and Android projects via Unity3D. This allows Unity3D to more easily integrate with \'fastlane\'.'
+  spec.summary       = 'Plugin for \'fastlane\' that defines an action to export iOS and Android projects via Unity3d. This allows Unity3d to more easily integrate with \'fastlane\'.'
   spec.homepage      = "https://github.com/ar-met/fastlane-plugin-unity-exporter"
   spec.license       = "MIT"
 
