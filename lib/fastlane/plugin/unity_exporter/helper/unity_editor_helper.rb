@@ -43,7 +43,8 @@ module Fastlane
 
       def self.verify_exporter_package
         # verifies that the UnityExporter package has been added to the Unity project
-        exporter_package_namespace = "io.armet.unity.exporter"
+        # TODO Unity currently does not support commandline arguments for the Package Manager
+        exporter_package_namespace = "io.armet.unity.buildexporter"
         included = load_unity_project_package_manifest.include?(exporter_package_namespace)
         unless included
           UI.user_error!("Package 'io.armet.unity.exporter' must be added to the Unity project.")

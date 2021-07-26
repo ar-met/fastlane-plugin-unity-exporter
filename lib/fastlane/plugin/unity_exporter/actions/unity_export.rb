@@ -26,7 +26,7 @@ module Fastlane
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
           # this script is part of the 'fastlane-plugin-unity-exporter-package'
-          headless_args << " -executeMethod UnityExporter.BuildUtility.CreateBuild"
+          headless_args << " -executeMethod armet.BuildExporter.BuildUtility.CreateBuild"
           headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
           headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
           headless_args << " -exportPath fastlane-build-exporter/#{params[:build_target]}/unity-export"
