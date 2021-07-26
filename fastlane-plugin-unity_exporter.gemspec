@@ -5,11 +5,11 @@ require 'fastlane/plugin/unity_exporter/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-unity_exporter'
   spec.version       = Fastlane::UnityExporter::VERSION
-  spec.author        = 'steft'
-  spec.email         = '52441940+stef-t@users.noreply.github.com'
+  spec.author        = 'ar:met'
+  spec.email         = 'office@armet.at'
 
   spec.summary       = 'Plugin for \'fastlane\' that defines a pre-processing action to export iOS and Android projects via Unity3D. This allows Unity3D to more easily integrate with \'fastlane\'.'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-unity_exporter"
+  spec.homepage      = "https://github.com/ar-met/fastlane-plugin-unity-exporter"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)

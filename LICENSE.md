@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2021 steft <52441940+stef-t@users.noreply.github.com>
+Copyright (c) 2021 ar:met
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
