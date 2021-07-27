@@ -31,10 +31,11 @@ Assuming you don't have _fastlane_ configured yet, we propose the following:
 1) Add the [_Unity Build Exporter_](https://github.com/ar-met/unity-build-exporter) via the [_Unity Package Manager_](https://docs.unity3d.com/Manual/Packages.html) to your _Unity3d_ project
 2) Open your _Unity3d_ project and find the menu items `Build Exporter / Initialize 'fastlane' directories for Android` and `Build Exporter / Initialize 'fastlane' directories for iOS`
 3) Commit the changes to your repository
-4) Navigate to `{Unity3d-project-root}/fastlane-build-exporter/iOS` and `{Unity3d-project-root}/fastlane-build-exporter/Android` and `fastlane init` respectively
-5) Commit the changes to your repository
-6) See [Getting Started](#getting-started)
-7) Use [the actions of the plugin](#actions)
+4) Navigate to `{Unity3d-project-root}/fastlane-build-exporter/iOS/unity-export` and `{Unity3d-project-root}/fastlane-build-exporter/Android/unity-export` and `fastlane init` respectively
+5) Move the created `fastlane/` directory up one level, such that it is on the same hierarchical level as `unity-export/`
+6) Commit the changes to your repository
+7) See [Getting Started](#getting-started)
+8) Use [the actions of the plugin](#actions)
 
 We suggest you also check out the [_example Unity3d project_](https://github.com/ar-met/fastlane-plugin-unity-exporter-example-project).
 
