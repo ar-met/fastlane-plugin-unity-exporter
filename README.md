@@ -105,16 +105,29 @@ unity_commit_version_bump
 ```
 
 
-## Compatibility
-
-Both this _fastlane plugin_ and the [_Unity Build Exporter_](https://github.com/ar-met/unity-build-exporter) were developed with _Unity 2020.3.13f1_. We haven't tested the plugin with any earlier versions, but we don't expect there to be any issues. If you run into trouble, regarding compatibility or anything else, [please open an issue](https://github.com/ar-met/unity-build-exporter/issues). For pull requests [see here](#pull-requests).
-
-
 ## Example
 
 Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.
 
 Also check out the example [_Unity3d_ project](https://github.com/ar-met/fastlane-plugin-unity-exporter-example-project) to see how this plugin works. See the repositories readme for more details.
+
+
+## Compatibility
+
+Both this _fastlane plugin_ and the [_Unity Build Exporter_](https://github.com/ar-met/unity-build-exporter) were developed with _Unity 2020.3.13f1_. We haven't tested the plugin with any earlier versions, but we don't expect there to be any issues. If you run into trouble, regarding compatibility or anything else, [please open an issue](https://github.com/ar-met/unity-build-exporter/issues). For pull requests [see here](#pull-requests).
+
+
+## Ruby
+
+Note that this plugin requires `Ruby 2.7.4`. 
+
+### Ruby on Mac
+
+Installing ruby -- even different versions of it -- on Mac and _fastlane_ is well documented.
+
+### Ruby on Windows
+
+To install ruby on Windows you, e.g., can use [_RubyInstaller_](https://rubyinstaller.org/downloads/). Be sure to get `Ruby 2.7.4`. After that you can use `gem` commands with Windows' command prompt and rely on _fastlane_'s documentation to get you going.
 
 
 ## Pull requests
