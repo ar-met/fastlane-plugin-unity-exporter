@@ -29,7 +29,12 @@ module Fastlane
           headless_args << " -executeMethod armet.BuildExporter.BuildUtility.CreateBuild"
           headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
           headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
-          headless_args << " -exportPath fastlane-build-exporter/#{params[:build_target]}/unity-export"
+
+          if params[:export_path]
+            headless_args << " -exportPath #{params[:export_path]}"
+          else
+            headless_args << " -exportPath fastlane-build-exporter/#{params[:build_target]}/unity-export"
+          end
 
           # NOTE: the different relative paths used in 'projectPath' and 'exportPath'
           # while 'projectPath' is relative to the 'fastfile',
@@ -159,7 +164,14 @@ module Fastlane
                                              UI.user_error!("Please pass a valid version code. For options see 'fastlane action unity_exporter'")
                                            end
                                          end
-                                       end)
+                                       end),
+
+          FastlaneCore::ConfigItem.new(key: :export_path,
+                                       env_name: "FL_UNITY_EXPORT_PATH",
+                                       description: "The path to the exported Unity project. The starting point for relative paths is the root of the Unity project",
+                                       optional: true,
+                                       type: String,
+                                       conflicting_options: [:arguments])
         ]
       end
 
