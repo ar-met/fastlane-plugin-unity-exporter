@@ -10,11 +10,16 @@ module Fastlane
     class UnityEditorHelper
       # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-build-exporter/{platform}-export/."
       # p File.expand_path("../../")
-      @@projectPathDefault = "../../"
-      @@projectPath = ""
+      @project_path_default = "../../"
+      @project_path = ""
+
+      def self.init_unity_project_path(project_path)
+        @project_path = project_path
+      end
 
       def self.unity_project_path
-        return @@projectPath if @@projectPath != ""
+        return @project_path if @project_path != ""
+
         return "../../"
       end
 
