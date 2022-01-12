@@ -12,7 +12,7 @@ module Fastlane
 
         # Thank you: https://linuxize.com/post/bash-redirect-stderr-stdout/#redirecting-stderr-to-stdout
         sh("echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1")
-        sh("git add '#{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
+        sh("git add '#{Helper::UnityEditorHelper.unity_project_path}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
         sh("git commit -m 'Version Bump' >> #{log_file} 2>&1")
       end
 

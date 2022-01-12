@@ -17,11 +17,15 @@ module Fastlane
           end
 
         elsif params[:build_target]
+          if params[:project_path]
+            Helper::UnityEditorHelper.class_variable_set(:@@projectPath, params[:project_path])
+          end
+
           # following are arguments as defined in the docs: https://docs.unity3d.com/Manual/CommandLineArguments.html
           headless_args = "-buildTarget #{params[:build_target]}"
           headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
           headless_args << " -accept-apiupdate -releaseCodeOptimization"
-          headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path_relative_to_fastfile}"
+          headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path}"
           headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
@@ -67,7 +71,7 @@ module Fastlane
           return
         end
 
-        UI.message("Open 'logFile', if you want to know whats going on with your build.")
+        UI.message("Open 'logFile', if you want to know whats going on with your build. Look for its path in the invocation of the next line.")
         invocation = unity_path.to_s
         invocation << " #{params[:arguments]}"
         sh(invocation) # 'sh' will print what's passed to it
@@ -165,6 +169,13 @@ module Fastlane
                                            end
                                          end
                                        end),
+
+          FastlaneCore::ConfigItem.new(key: :project_path,
+                                       env_name: "FL_UNITY_PROJECT_PATH",
+                                       description: "The path to the Unity project. The starting point for relative paths is the directory that contains the 'fastlane' folder",
+                                       optional: true,
+                                       type: String,
+                                       conflicting_options: [:arguments]),
 
           FastlaneCore::ConfigItem.new(key: :export_path,
                                        env_name: "FL_UNITY_EXPORT_PATH",
