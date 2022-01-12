@@ -28,7 +28,7 @@ module Fastlane
 
       def self.verify_default_path
         # verifies that the Unity Hub exists at the default path
-        exists = File.file?(Helper::UnityHubHelper.unity_hub_path(false)) == true
+        exists = File.file?(Helper::UnityHubHelper.unity_hub_path(false))
         unless exists
           UI.error("Unity Hub does not exist at path '#{Helper::UnityHubHelper.unity_hub_path(false)}'")
         end

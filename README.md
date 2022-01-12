@@ -88,13 +88,21 @@ unity_export(build_target: "...", new_version_code: "42")
 # increments the existing version code (Android) and build number (iOS)
 unity_export(build_target: "...", new_version_code: "increment")
 
+# the expected default path is in accordance with the "getting started" section of this readme
+# if a custom path to the Unity project is required, it's specified this way
+# note that the starting point for relative paths is the directory that contains the 'fastlane' folder
+unity_export(build_target: "...", project_path: "path/some-example-unity-projects-directory")
+
 # exports the Unity project to the specified path
 # if no export path is specified, a default path will be used
 # note that the starting point for relative paths is the root of the Unity project
 unity_export(build_target: "...", export_path: "path/some-example-builds-directory")
 
-# combined usage of 'new_version' and 'new_version_code' and 'export_path'
-unity_export(build_target: "...", new_version: "2.3.4", new_version_code: "0", export_path: "path/Builds")
+# combined usage of 'new_version', 'new_version_code', 'project_path' and 'export_path'
+unity_export(
+  build_target: "...", 
+  new_version: "2.3.4", new_version_code: "0", 
+  project_path: "path/Unity-project", export_path: "path/Builds")
 ```
 
 ### Using `unity_commit_version_bump`

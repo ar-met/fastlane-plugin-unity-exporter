@@ -8,9 +8,13 @@ module Fastlane
 
   module Helper
     class UnityEditorHelper
-      def self.unity_project_path_relative_to_fastfile
-        # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-build-exporter/{platform}-export/."
-        # p File.expand_path("../../")
+      # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-build-exporter/{platform}-export/."
+      # p File.expand_path("../../")
+      @@projectPathDefault = "../../"
+      @@projectPath = ""
+
+      def self.unity_project_path
+        return @@projectPath if @@projectPath != ""
         return "../../"
       end
 
@@ -46,6 +50,7 @@ module Fastlane
         # TODO Unity currently does not support commandline arguments for the Package Manager
         exporter_package_namespace = "io.armet.unity.buildexporter"
         included = load_unity_project_package_manifest.include?(exporter_package_namespace)
+        # UI.message("exporter package part of Unity project: '#{included}'")
         unless included
           UI.user_error!("Package 'io.armet.unity.exporter' must be added to the Unity project.")
         end
@@ -57,19 +62,25 @@ module Fastlane
         relative_path = if FastlaneCore::Helper.is_test?
                           "/tmp/fastlane/tests/fixtures/unity_project"
                         else
-                          unity_project_path_relative_to_fastfile
+                          unity_project_path
                         end
 
         package_manifest_path = "#{relative_path}/Packages/manifest.json"
-        package_manifest_json = File.read(package_manifest_path)
-        return package_manifest_json
+
+        # we verify the path to the Unity project by looking for the 'manifest.json' file
+        if File.file?(package_manifest_path)
+          return File.read(package_manifest_path)
+        else
+          UI.user_error!("Cannot find 'manifest.json' at '#{package_manifest_path}'. Make sure that the Unity project path is properly set.")
+          return ""
+        end
       end
 
       def self.load_unity_project_version
         relative_path = if FastlaneCore::Helper.is_test?
                           "/tmp/fastlane/tests/fixtures/unity_project"
                         else
-                          unity_project_path_relative_to_fastfile
+                          unity_project_path
                         end
 
         project_version_txt_path = "#{relative_path}/ProjectSettings/ProjectVersion.txt"
