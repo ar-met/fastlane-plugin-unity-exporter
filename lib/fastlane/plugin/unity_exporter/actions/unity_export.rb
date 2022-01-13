@@ -26,7 +26,7 @@ module Fastlane
           headless_args << " -batchmode -nographics -quit" # some arguments that are required when running Unity in headless-mode
           headless_args << " -accept-apiupdate -releaseCodeOptimization"
           headless_args << " -projectPath #{Helper::UnityEditorHelper.unity_project_path}"
-          headless_args << " -logFile unity-export-logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
+          headless_args << " -logFile #{Helper::UnityEditorHelper.unity_project_path}/BuildExporter/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_#{params[:build_target]}_build.log" # logging; not specifying a path will print the log to the console
 
           # following are custom arguments defined in 'UnityExporter.BuildUtility'
           # this script is part of the 'fastlane-plugin-unity-exporter-package'
