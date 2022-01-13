@@ -3,7 +3,7 @@ require 'shellwords'
 require_relative './unity_editor_helper'
 
 module Fastlane
-  UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
+  UI = FastlaneCore::UI unless Fastlane.const_defined?(:UI)
 
   module Helper
     # a helper class specific to the Unity-Build-Exporter package: https://github.com/ar-met/unity-build-exporter
