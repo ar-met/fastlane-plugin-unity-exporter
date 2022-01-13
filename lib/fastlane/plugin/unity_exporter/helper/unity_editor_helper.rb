@@ -14,9 +14,15 @@ module Fastlane
       @project_path = ""
 
       def self.unity_project_path
-        return @project_path if @project_path != ""
+        project_path = @project_path == "" ? "../../" : @project_path
 
-        return "../../"
+        # we verify the path to the Unity project by looking for the 'manifest.json' file
+        package_manifest_path = "#{project_path}/Packages/manifest.json"
+        unless File.file?(package_manifest_path)
+          UI.user_error!("Cannot find 'manifest.json' at '#{package_manifest_path}'. Make sure that the Unity project path is properly set.")
+        end
+
+        return project_path
       end
 
       def self.unity_editor_path
@@ -67,14 +73,7 @@ module Fastlane
                         end
 
         package_manifest_path = "#{relative_path}/Packages/manifest.json"
-
-        # we verify the path to the Unity project by looking for the 'manifest.json' file
-        if File.file?(package_manifest_path)
-          return File.read(package_manifest_path)
-        else
-          UI.user_error!("Cannot find 'manifest.json' at '#{package_manifest_path}'. Make sure that the Unity project path is properly set.")
-          return ""
-        end
+        return File.read(package_manifest_path)
       end
 
       def self.load_unity_project_version
