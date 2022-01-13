@@ -2,7 +2,7 @@ require 'fastlane_core/ui/ui'
 require 'shellwords'
 
 module Fastlane
-  UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
+  UI = FastlaneCore::UI unless Fastlane.const_defined?(:UI)
 
   module Helper
     class GenericHelper

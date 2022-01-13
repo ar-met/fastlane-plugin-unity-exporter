@@ -4,7 +4,7 @@ require_relative './unity_hub_helper'
 require_relative './generic_helper'
 
 module Fastlane
-  UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
+  UI = FastlaneCore::UI unless Fastlane.const_defined?(:UI)
 
   module Helper
     class UnityEditorHelper
