@@ -9,12 +9,12 @@ module Fastlane
   module Helper
     class UnityEditorHelper
       # project path relative if following hierarchy is given: "root/{unity-project}/fastlane-build-exporter/{platform}-export/."
-      # p File.expand_path("../../")
-      @project_path_default = "../../"
+      # p File.expand_path("../..")
+      @project_path_default = "../.."
       @project_path = ""
 
       def self.unity_project_path
-        project_path = @project_path == "" ? "../../" : @project_path
+        project_path = @project_path == "" ? @project_path_default : @project_path
 
         # we verify the path to the Unity project by looking for the 'manifest.json' file
         package_manifest_path = "#{project_path}/Packages/manifest.json"
