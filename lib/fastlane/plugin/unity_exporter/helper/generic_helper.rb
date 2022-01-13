@@ -7,12 +7,11 @@ module Fastlane
 
   module Helper
     class GenericHelper
-
       @git_log_path = "fastlane-unity-exporter/logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_git.log"
 
       def self.build_exporter_versions
         # this is created and updated whenever you create a build via the build exporter
-        build_exporter_versions_file = "#{Helper::UnityEditorHelper::unity_project_path}/BuildExporter/latest-build-version.txt"
+        build_exporter_versions_file = "#{Helper::UnityEditorHelper.unity_project_path}/BuildExporter/latest-build-version.txt"
 
         if File.file?(build_exporter_versions_file)
           return File.readlines(build_exporter_versions_file, chomp: true)
