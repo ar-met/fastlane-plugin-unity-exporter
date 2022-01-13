@@ -1,5 +1,6 @@
 require 'fastlane/action'
 require_relative '../helper/unity_editor_helper'
+require_relative '../helper/generic_helper'
 
 module Fastlane
   module Actions
@@ -8,7 +9,7 @@ module Fastlane
         # TODO: improve the commit command: currently it simply commits the ProjectSettings file
         #      what if there are other changes in the file and you don't want these changes to be part of the commit
 
-        log_file = "unity-export-logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_git.log"
+        log_file = Helper::GenericHelper.instance_variable_get(:@git_log_path)
 
         # Thank you: https://linuxize.com/post/bash-redirect-stderr-stdout/#redirecting-stderr-to-stdout
         sh("echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1")
