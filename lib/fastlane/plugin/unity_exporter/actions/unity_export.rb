@@ -18,7 +18,7 @@ module Fastlane
 
         elsif params[:build_target]
           if params[:project_path]
-            Helper::UnityEditorHelper.init_unity_project_path(params[:project_path])
+            Helper::UnityEditorHelper.instance_variable_set(:@project_path, params[:project_path])
           end
 
           # following are arguments as defined in the docs: https://docs.unity3d.com/Manual/CommandLineArguments.html

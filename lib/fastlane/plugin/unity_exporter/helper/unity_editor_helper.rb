@@ -13,10 +13,6 @@ module Fastlane
       @project_path_default = "../../"
       @project_path = ""
 
-      def self.init_unity_project_path(project_path)
-        @project_path = project_path
-      end
-
       def self.unity_project_path
         return @project_path if @project_path != ""
 
