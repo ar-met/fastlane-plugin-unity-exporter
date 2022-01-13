@@ -6,6 +6,10 @@ module Fastlane
   module Actions
     class UnityCommitVersionBumpAction < Action
       def self.run(params)
+        if params[:project_path]
+          Helper::UnityEditorHelper.instance_variable_set(:@project_path, params[:project_path])
+        end
+
         # TODO: improve the commit command: currently it simply commits the ProjectSettings file
         #      what if there are other changes in the file and you don't want these changes to be part of the commit
 
@@ -34,6 +38,14 @@ module Fastlane
       end
 
       def self.available_options
+        [
+          FastlaneCore::ConfigItem.new(key: :project_path,
+                                       env_name: "FL_UNITY_PROJECT_PATH",
+                                       description: "The path to the Unity project. The starting point for relative paths is the directory that contains the 'fastlane' folder",
+                                       optional: true,
+                                       type: String,
+                                       conflicting_options: [:arguments])
+        ]
       end
 
       def self.is_supported?(platform)

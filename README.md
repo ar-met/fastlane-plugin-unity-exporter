@@ -115,6 +115,12 @@ unity_export(build_target: "...", new_version: "3.4.5", new_version_code: "0")
 
 # after the export is finished, we commit the version bump
 unity_commit_version_bump
+
+# another invocation example that specifies a project path
+# the expected default path is in accordance with the "getting started" section of this readme
+# if a custom path to the Unity project is required, it's specified this way
+# note that the starting point for relative paths is the directory that contains the 'fastlane' folder
+unity_commit_version_bump(project_path: "path/some-example-unity-projects-directory")
 ```
 
 ### Using `unity_get_version_number`
@@ -126,6 +132,12 @@ unity_export(...)
 # afterwards you can get the version number like so
 # note that an error code will be returned if something fails
 version_number = unity_get_version_number
+
+# another invocation example that specifies a project path
+# the expected default path is in accordance with the "getting started" section of this readme
+# if a custom path to the Unity project is required, it's specified this way
+# note that the starting point for relative paths is the directory that contains the 'fastlane' folder
+version_number = unity_get_version_number(project_path: "path/some-example-unity-projects-directory")
 ```
 
 ### Using `unity_get_build_number`
@@ -137,6 +149,12 @@ unity_export(...)
 # afterwards you can get the build number like so
 # note that an error code will be returned if something fails
 build_number = unity_get_build_number
+
+# another invocation example that specifies a project path
+# the expected default path is in accordance with the "getting started" section of this readme
+# if a custom path to the Unity project is required, it's specified this way
+# note that the starting point for relative paths is the directory that contains the 'fastlane' folder
+build_number = unity_get_build_number(project_path: "path/some-example-unity-projects-directory")
 ```
 
 
