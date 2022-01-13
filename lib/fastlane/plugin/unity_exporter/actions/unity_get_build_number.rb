@@ -1,4 +1,5 @@
 require 'fastlane/action'
+require 'fastlane_core/configuration/config_item'
 require_relative '../helper/unity_editor_helper'
 require_relative '../helper/build_exporter_helper'
 
