@@ -117,6 +117,28 @@ unity_export(build_target: "...", new_version: "3.4.5", new_version_code: "0")
 unity_commit_version_bump
 ```
 
+### Using `unity_get_version_number`
+
+```ruby
+# you must first use the unity export action
+unity_export(...)
+
+# afterwards you can get the version number like so
+# note that an error code will be returned if something fails
+version_number = unity_get_version_number
+```
+
+### Using `unity_get_build_number`
+
+```ruby
+# you must first use the unity export action
+unity_export(...)
+
+# afterwards you can get the build number like so
+# note that an error code will be returned if something fails
+build_number = unity_get_build_number
+```
+
 
 ## Example
 
