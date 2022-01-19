@@ -8,7 +8,14 @@ module Fastlane
     class UnityExportAction < Action
       def self.run(params)
         if params[:arguments]
+          #UI.message("Passed arguments: '#{params[:arguments]}'")
           if params[:use_default_paths]
+            pp = params[:arguments].scan(/-projectPath ((\w|[[:punct:]])*)/)[0][0]
+            if pp != ""
+              UI.message("Parsed project path from passed arguments: '#{pp}'")
+              Helper::UnityEditorHelper.instance_variable_set(:@project_path, pp)
+            end
+
             invoke_unity(arguments: " #{params[:arguments]}")
           else
             # path to Unity is provided as part of 'arguments'
@@ -34,15 +41,18 @@ module Fastlane
           headless_args << " -newVersion #{params[:new_version]}" if params[:new_version]
           headless_args << " -newVersionCode #{params[:new_version_code]}" if params[:new_version_code]
 
+          # NOTE: the different relative paths used in 'projectPath' and 'exportPath'
+          # while 'projectPath' is relative to the 'fastfile',
+          # 'exportPath' is relative to 'projectPath' aka the Unity project's root directory
           if params[:export_path]
             headless_args << " -exportPath #{params[:export_path]}"
           else
             headless_args << " -exportPath fastlane-build-exporter/#{params[:build_target]}/unity-export"
           end
 
-          # NOTE: the different relative paths used in 'projectPath' and 'exportPath'
-          # while 'projectPath' is relative to the 'fastfile',
-          # 'exportPath' is relative to 'projectPath' aka the Unity project's root directory
+          unless Helper::UnityEditorHelper.verify_exporter_package
+            return
+          end
 
           invoke_unity(arguments: headless_args)
 
@@ -59,10 +69,6 @@ module Fastlane
         end
 
         unless Helper::UnityHubHelper.verify_default_path
-          return
-        end
-
-        unless Helper::UnityEditorHelper.verify_exporter_package
           return
         end
 
