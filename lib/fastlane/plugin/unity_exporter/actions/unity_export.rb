@@ -8,7 +8,7 @@ module Fastlane
     class UnityExportAction < Action
       def self.run(params)
         if params[:arguments]
-          #UI.message("Passed arguments: '#{params[:arguments]}'")
+          # UI.message("Passed arguments: '#{params[:arguments]}'")
           if params[:use_default_paths]
             pp = params[:arguments].scan(/-projectPath ((\w|[[:punct:]])*)/)[0][0]
             if pp != ""
