@@ -8,7 +8,7 @@ module Fastlane
     class UnityExportAction < Action
       def self.run(params)
         if params[:arguments]
-          #UI.message("Passed arguments: '#{params[:arguments]}'")
+          # UI.message("Passed arguments: '#{params[:arguments]}'")
           if params[:use_default_paths]
             pp = params[:arguments].scan(/-projectPath ((\w|[[:punct:]])*)/)[0][0]
             if pp != ""
@@ -155,7 +155,7 @@ module Fastlane
                                        type: String,
                                        conflicting_options: [:arguments],
                                        verify_block: proc do |value|
-                                         unless value == "major" || value == "minor" || value == "patch" || Gem::Version.new(value).correct?
+                                         unless value == "major" || value == "minor" || value == "patch" || Gem::Version.correct?(value)
                                            UI.user_error!("Please pass a valid version. For options see 'fastlane action unity_exporter'")
                                          end
                                        end),
