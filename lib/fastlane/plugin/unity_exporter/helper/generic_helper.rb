@@ -6,7 +6,7 @@ module Fastlane
 
   module Helper
     class GenericHelper
-      @git_log_path = "fastlane-unity-exporter/logs/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_git.log"
+      @git_log_path = "BuildExporter/#{DateTime.now.strftime('%Y-%m-%d_%H-%M-%S-%L')}_git.log"
 
       def self.shellify(path)
         if FastlaneCore::Helper.is_mac?

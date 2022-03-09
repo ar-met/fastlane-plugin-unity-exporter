@@ -16,10 +16,13 @@ module Fastlane
 
         log_file = Helper::GenericHelper.instance_variable_get(:@git_log_path)
 
-        # Thank you: https://linuxize.com/post/bash-redirect-stderr-stdout/#redirecting-stderr-to-stdout
-        sh("echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1")
-        sh("git add '#{Helper::UnityEditorHelper.unity_project_path}ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
-        sh("git commit -m 'Version Bump' >> #{log_file} 2>&1")
+        # this changes the working directory for the code run between the do/end block
+        Dir.chdir(Helper::UnityEditorHelper.unity_project_path) do
+          # Thank you: https://linuxize.com/post/bash-redirect-stderr-stdout/#redirecting-stderr-to-stdout
+          sh("echo 'UnityCommitVersionBumpAction: created file' > #{log_file} 2>&1")
+          sh("git add 'ProjectSettings/ProjectSettings.asset' >> #{log_file} 2>&1")
+          sh("git commit -m 'Version Bump' >> #{log_file} 2>&1")
+        end
       end
 
       def self.description

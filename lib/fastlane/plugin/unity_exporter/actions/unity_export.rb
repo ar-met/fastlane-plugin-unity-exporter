@@ -155,7 +155,7 @@ module Fastlane
                                        type: String,
                                        conflicting_options: [:arguments],
                                        verify_block: proc do |value|
-                                         unless value == "major" || value == "minor" || value == "patch" || Gem::Version.new(value).correct?
+                                         unless value == "major" || value == "minor" || value == "patch" || Gem::Version.correct?(value)
                                            UI.user_error!("Please pass a valid version. For options see 'fastlane action unity_exporter'")
                                          end
                                        end),
